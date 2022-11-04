@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react"
+
+import { fetchToken, onMessageListener } from "./config/firebase"
 
 function App() {
+  const [token, setToken] = useState(false)
+
+  useEffect(() => {
+    fetchToken(setToken)
+  }, [])
+
+  onMessageListener()
+    .then((payload) => {
+      console.log({
+        title: payload.notification.title,
+        body: payload.notification.body,
+      })
+      console.log(payload)
+    })
+    .catch((err) => console.log("failed: ", err))
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>React Firebase Messaging</h1>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
